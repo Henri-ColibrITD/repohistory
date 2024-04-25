@@ -5,28 +5,33 @@ import Star from '@/components/Icons/Star';
 import supabase from '@/utils/supabase';
 import { Link } from '@nextui-org/react';
 
-export default async function Overview({ repo }: { repo: any }) {
+export async function overviewData(repoName: string) {
   const { data: clonesData, error: clonesError } = await supabase
     .from('repository_traffic')
     .select('*')
-    .eq('full_name', repo.full_name)
+    .eq('full_name', repoName)
     .order('date', { ascending: true })
     .select('clones_count');
-
-  const clonesTotal = clonesError
-    ? 0
-    : clonesData.reduce((acc, row) => acc + row.clones_count, 0);
 
   const { data: viewsData, error: viewsError } = await supabase
     .from('repository_traffic')
     .select('*')
-    .eq('full_name', repo.full_name)
+    .eq('full_name', repoName)
     .order('date', { ascending: true })
     .select('views_count');
 
-  const viewsTotal = viewsError
-    ? 0
-    : viewsData.reduce((acc, row) => acc + row.views_count, 0);
+  return {
+    clones: clonesError
+      ? 0
+      : clonesData.reduce((acc, row) => acc + row.clones_count, 0),
+    views: viewsError
+      ? 0
+      : viewsData.reduce((acc, row) => acc + row.views_count, 0)
+  }
+}
+
+export default async function Overview({ repo }: { repo: any }) {
+  const data = await overviewData(repo.full_name)
 
   return (
     <div className="flex flex-col gap-5 xl:w-1/3">
@@ -80,14 +85,14 @@ export default async function Overview({ repo }: { repo: any }) {
             rounded-medium border border-[#303031] bg-[#111112] p-5 text-white"
         >
           <div className="text-center font-semibold ">Total Clones</div>
-          <div className="text-center text-3xl font-bold">{clonesTotal}</div>
+          <div className="text-center text-3xl font-bold">{data.clones}</div>
         </div>
         <div
           className="flex w-1/2 flex-col justify-center gap-3
             rounded-medium border border-[#303031] bg-[#111112] p-5 text-white"
         >
           <div className="text-center font-semibold">Total Views</div>
-          <div className="text-center text-3xl font-bold">{viewsTotal}</div>
+          <div className="text-center text-3xl font-bold">{data.views}</div>
         </div>
       </div>
     </div>

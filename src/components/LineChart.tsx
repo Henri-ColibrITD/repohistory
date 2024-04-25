@@ -4,22 +4,21 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
 
-import { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
-import { Switch } from '@nextui-org/react';
 import { lineOptions } from '@/utils/chartjs';
-import processStarData from '@/utils/processStarsData';
+import { Switch } from '@nextui-org/react';
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Filler,
+  Legend,
+  LineElement,
   LinearScale,
   PointElement,
-  LineElement,
   Title,
   Tooltip,
-  Legend,
-  Filler,
 } from 'chart.js';
+import { useState } from 'react';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -33,30 +32,15 @@ ChartJS.register(
 );
 
 export default function LineChart({
-  fetchPromises,
+  data,
 }: {
-  fetchPromises: Promise<any>[];
+  data: {
+    counts: [string[], number[]];
+    growth: [string[], number[]];
+}
 }) {
   const [growth, setGrowth] = useState(false);
-  const [stars, setStars] = useState<any[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      const results = await Promise.allSettled(fetchPromises);
-
-      const newStars: any[] = [];
-      results.forEach((result) => {
-        if (result.status === 'fulfilled') {
-          const filteredData = result.value.data.map((d: any) => d.starred_at);
-          newStars.push(...filteredData);
-        }
-      });
-
-      setStars(newStars);
-    })();
-  }, [fetchPromises]);
-
-  const [starsDates, starsCount] = processStarData(stars, growth);
+  const [starsDates, starsCount] = growth? data.growth: data.counts;
 
   return (
     <div

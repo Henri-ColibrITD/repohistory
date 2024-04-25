@@ -21,19 +21,11 @@ export default async function TrafficCharts({
     .eq('full_name', fullName)
     .order('date', { ascending: true });
 
-  let dates = [];
-  let viewsCounts = [];
-  let uniqueViewsCounts = [];
-  let clonesCounts = [];
-  let uniqueClonesCounts = [];
-
-  if (!error) {
-    dates = trafficData.map((item) => item.date);
-    viewsCounts = trafficData.map((item) => item.views_count);
-    uniqueViewsCounts = trafficData.map((item) => item.unique_views_count);
-    clonesCounts = trafficData.map((item) => item.clones_count);
-    uniqueClonesCounts = trafficData.map((item) => item.unique_clones_count);
-  }
+  const dates = error ? [] :  trafficData.map((item) => item.date);
+  const viewsCounts = error ? [] :  trafficData.map((item) => item.views_count);
+  const uniqueViewsCounts = error ? [] :  trafficData.map((item) => item.unique_views_count);
+  const clonesCounts = error ? [] :  trafficData.map((item) => item.clones_count);
+  const uniqueClonesCounts = error ? [] :  trafficData.map((item) => item.unique_clones_count);
 
   return (
     <>
