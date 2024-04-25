@@ -5,7 +5,18 @@ import Star from '@/components/Icons/Star';
 import supabase from '@/utils/supabase';
 import { Link } from '@nextui-org/react';
 
+async function prepareDataDownload(repoName: string) {
+  const { data: data, error: error } = await supabase
+    .from('repository_traffic')
+    .select('*')
+    .eq('full_name', repoName)
+    .order('date', { ascending: true });
+  return "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+}
+
 export default async function Overview({ repo }: { repo: any }) {
+  const downloadableData = await prepareDataDownload(repo.full_name);
+
   const { data: clonesData, error: clonesError } = await supabase
     .from('repository_traffic')
     .select('*')
@@ -67,7 +78,12 @@ export default async function Overview({ repo }: { repo: any }) {
             <Issue />
             {repo?.open_issues_count}
           </Link>
-          <Link isBlock className='flex items-right gap-2 text-white'>
+          <Link 
+            isBlock 
+            className='flex items-right gap-2 text-white'
+            href={downloadableData}
+            download="repo-data.json"
+          >
             <Download/>
             Download raw data
           </Link>
