@@ -1,3 +1,4 @@
+import Download from '@/components/Icons/Download';
 import Fork from '@/components/Icons/Fork';
 import Issue from '@/components/Icons/Issue';
 import Star from '@/components/Icons/Star';
@@ -65,6 +66,10 @@ export default async function Overview({ repo }: { repo: any }) {
           >
             <Issue />
             {repo?.open_issues_count}
+          </Link>
+          <Link isBlock className='flex items-right gap-2 text-white'>
+            <Download/>
+            Download raw data
           </Link>
         </div>
       </div>
