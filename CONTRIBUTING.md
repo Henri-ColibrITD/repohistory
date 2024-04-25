@@ -41,3 +41,17 @@ openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in private-key.pem -out 
 
 7. Run the web app: `yarn run dev`
 8. Install your GitHub App on your account, and then you can access the web app at http://127.0.0.1:3000
+
+### Additional notes
+
+If you're not used to yarn, here are a few whoops I had to go through to make 
+sure to have everything working (commands, typechecking on vs code, etc...)
+
+- Installing a recent enough version of node: `nvm install lts`;
+- Make sure you use said version (sudo might be needed here): `nvm use
+  <version>`, where `<version>` is the version of the node version installed by
+  the previous command.
+- Install a recent enough version of yarn: `corepack install --global yarn@latest`;
+- Add the yarn binary to your path: `corepack enable`
+- Get the types binding to work with your IDE: `yarn dlx @yarnpkg/sdks vscode`
+  (this is explained in [the docs](https://yarnpkg.com/getting-started/editor-sdks))

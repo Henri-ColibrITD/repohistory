@@ -8,7 +8,7 @@ swe-worker-*
 # dependencies
 /node_modules
 /.pnp
-.pnp.js
+.pnp.*js
 
 # testing
 /coverage
@@ -23,6 +23,8 @@ swe-worker-*
 # misc
 .DS_Store
 *.pem
+.yarn/
+.vscode/
 
 # debug
 npm-debug.log*
