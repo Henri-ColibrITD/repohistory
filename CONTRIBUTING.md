@@ -14,6 +14,7 @@ Repohistory fetch repository data through GitHub Apps. You need to register a ne
   - Callback URL: `http://127.0.0.1:3000/login`
   - Webhook URL: `https://your-exposed-url-in-step-one/api/webhooks`
   - Permissions & events: `Repository Administration: Read-only`, `Repository Metadata: Read-only`
+5. Generate an app private key
 
 ### Setup Local Environment
 
@@ -28,7 +29,11 @@ APP_ID="your app id when you create a GitHub App"
 NEXT_PUBLIC_APP_CLIENT_ID="your app client id when you create a GitHub App"
 APP_CLIENT_SECRET="your app client secret when you create a GitHub App"
 APP_WEBHOOK_SECRET="your app webhook secret when you create a GitHub App"
-APP_PRIVATE_KEY="-----BEGIN PRIVATE KEY....END PRIVATE KEY----"
+APP_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----
+...
+from step 5 of the github apps setup
+...
+-----END PRIVATE KEY----"
 NEXT_PUBLIC_SITE_URL="http://127.0.0.1:3000"
 SUPABASE_URL="API URL from step 5 output"
 SUPABASE_ANON_KEY="anon key from step 5 output"
@@ -54,4 +59,10 @@ sure to have everything working (commands, typechecking on vs code, etc...)
 - Install a recent enough version of yarn: `corepack install --global yarn@latest`;
 - Add the yarn binary to your path: `corepack enable`
 - Get the types binding to work with your IDE: `yarn dlx @yarnpkg/sdks vscode`
-  (this is explained in [the docs](https://yarnpkg.com/getting-started/editor-sdks))
+  (this is explained in [the
+  docs](https://yarnpkg.com/getting-started/editor-sdks))
+  
+In the **Setup Local Environment** section, on step 5, in order to have the anon
+key, make sure that `auth.enabled` is set to true in `supabase\config.toml`.
+
+The `APP_PRIVATE_KEY` from step 6 can be found 
